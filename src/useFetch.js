@@ -8,6 +8,9 @@ const useFetch = (url) => {
   useEffect(() => {
     const abortCont = new AbortController();
 
+    // let url = new URL(url),
+    // Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+
     setTimeout(() => {
       fetch(url, { signal: abortCont.signal })
       .then(res => {
@@ -18,6 +21,7 @@ const useFetch = (url) => {
       })
       .then(data => {
         setIsPending(false);
+        debugger;
         setData(data);
         setError(null);
       })
