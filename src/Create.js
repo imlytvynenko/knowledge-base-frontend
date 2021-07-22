@@ -38,7 +38,7 @@ const Create = () => {
           value={content}
           onChange={(e) => setContent(e.target.value)}
         ></textarea>
-        <label>Blog author:</label>
+        <label>Author:</label>
         <select
           value={author}
           onChange={(e) => setAuthor(e.target.value)}
@@ -46,7 +46,7 @@ const Create = () => {
           <option value="mario">mario</option>
           <option value="yoshi">yoshi</option>
         </select>
-        <button>Add Blog</button>
+        <button>Add Article</button>
       </form>
     </div>
   );
