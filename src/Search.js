@@ -26,7 +26,7 @@ const SearchBar = ({ onSearch }) => {
 
   return(<form action="/" method="get" onSubmit={ submitHandler }>
       <label htmlFor="header-search">
-          <span className="visually-hidden">Search articles</span>
+          <span className="visually-hidden"></span>
       </label>
       <input
           {...input.bind}

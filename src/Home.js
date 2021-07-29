@@ -35,7 +35,6 @@ const Home = () => {
         setArticles(articles.concat(data.articles || []))
         setLoading(false)
 
-        debugger;
         // TODO: hasmore should be included into server response or move to settings
         if (data.articles.length < 5) {
           setHasMore(false)

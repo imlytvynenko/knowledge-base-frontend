@@ -7,7 +7,7 @@ const ArticleList = ({ articles }) => {
         <div className="article-preview" key={article.id} >
           <Link to={`/articles/${article.id}`}>
             <h2>{ article.title }</h2>
-            <p>Written by { article.author }</p>
+            <p>Created_at: { new Date(article.created_at).toDateString() }</p>
           </Link>
         </div>
       ))}

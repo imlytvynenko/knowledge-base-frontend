@@ -37,7 +37,7 @@ const ArticleDetails = () => {
       { article && (
         <article>
           <h2>{ article.title }</h2>
-          <p>Written by { article.author }</p>
+          <p>Created_at: { new Date(article.created_at).toDateString() }</p>
           <div>{ article.content }</div>
           {/* <button onClick={handleClick}>delete</button> */}
         </article>
