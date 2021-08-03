@@ -18,10 +18,7 @@ const SearchBar = ({ onSearch }) => {
 
   function submitHandler(event) {
     event.preventDefault()
-  
-    if (input.value().trim()) {
-      onSearch(input.value())
-    }
+    onSearch(input.value())
   }
 
   return(<form action="/" method="get" onSubmit={ submitHandler }>

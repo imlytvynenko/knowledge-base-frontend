@@ -12,9 +12,9 @@ const ArticleDetails = () => {
     fetch('/articles/' + id)
       .then((res) => {
         if (!res.ok) { // error coming back from server
-          throw Error('could not fetch the data for that resource');
+          throw Error('could not fetch the data for that resource')
         }
-        return res.json();
+        return res.json()
       })
       .then((data) => {
         setArticle(data.article)
@@ -25,8 +25,12 @@ const ArticleDetails = () => {
   const handleClick = () => {
     fetch('/articles' + article.id, {
       method: 'DELETE'
-    }).then(() => {
-      history.push('/');
+    }).then((res) => {
+      if (!res.ok) { // error coming back from server
+        throw Error('could not fetch the data for that resource')
+      } 
+      
+      history.push('/')
     }) 
   }
 

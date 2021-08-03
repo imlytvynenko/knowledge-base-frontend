@@ -1,6 +1,7 @@
 import InfiniteScroll from "react-infinite-scroll-component";
 import ArticleList from "./Article/ArticleList";
 import SearchBar from './Search';
+import TagList from './TagList';
 import useFetch from "./useFetch";
 import { useState, useEffect } from 'react';
 
@@ -13,11 +14,26 @@ const style = {
 
 const Home = () => {
   const [articles, setArticles] = useState([])
+  const [tags, setTags] = useState(['general'])
   const [hasMore, setHasMore] = useState(true)
   const [loading, setLoading] = useState(true)
   const [offset, setOffset] = useState(0)
 
   const [searchTerm, setSearchTerm] = useState('');  
+
+  const fetchTags = _ => {
+    fetch('/tags')
+      .then((res) => {
+        if (!res.ok) { // error coming back from server
+          throw Error('could not fetch the data for that resource');
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setTags(data.tags)
+        setLoading(false)       
+      })
+  }
 
   const fetchMoreData = (term = '') => {
     setSearchTerm(term)
@@ -46,16 +62,36 @@ const Home = () => {
 
   useEffect(() => {
     fetchMoreData()
+    fetchTags()
   }, [])
+
+  function searchArticlesByTag(tag) {
+    setLoading(true)
+
+    fetch('/articles?tag=' + tag)
+      .then((res) => {
+        if (!res.ok) { // error coming back from server
+          throw Error('could not fetch the data for that resource');
+          setLoading(false)
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setArticles(data.articles || [])
+        setLoading(false)
+      })
+  }
+  
 
   function searchArticles(term) {
     setLoading(true)
     setSearchTerm(term)
 
-    fetch('/articles?term=' + searchTerm)
+    fetch('/articles?term=' + term)
       .then((res) => {
         if (!res.ok) { // error coming back from server
           throw Error('could not fetch the data for that resource');
+          setLoading(false)
         }
         return res.json();
       })
@@ -68,6 +104,7 @@ const Home = () => {
   return (
     <div>
       <SearchBar onSearch={searchArticles}/>
+      <TagList tags={tags} onSelect={searchArticlesByTag}/>
       <div className="home">
         <InfiniteScroll
             dataLength={articles.length}
