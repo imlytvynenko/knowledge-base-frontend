@@ -8,7 +8,7 @@ const TagList = ({ tags, onSelect }) => {
   return (
     <div className="tag-list">
       {tags.map(tag => (
-        <button onClick={clickHandler} key={tag}>
+        <button className="tag" onClick={clickHandler} key={tag}>
           { tag }
         </button>
       ))}

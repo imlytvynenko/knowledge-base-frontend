@@ -4,6 +4,8 @@ import SearchBar from './Search';
 import TagList from './TagList';
 import useFetch from "./useFetch";
 import { useState, useEffect } from 'react';
+import _ from 'underscore'
+
 
 const style = {
   height: 30,
@@ -55,6 +57,10 @@ const Home = () => {
         if (data.articles.length < 5) {
           setHasMore(false)
         }
+
+        if (!_.isEmpty(term)) {
+          setHasMore(false)
+        }
         // TODO: Limit should be included into server response or move to settings
         setOffset(offset + 5)
       })
@@ -67,6 +73,7 @@ const Home = () => {
 
   function searchArticlesByTag(tag) {
     setLoading(true)
+    setSearchTerm('')
 
     fetch('/articles?tag=' + tag)
       .then((res) => {
@@ -78,6 +85,11 @@ const Home = () => {
       })
       .then((data) => {
         setArticles(data.articles || [])
+
+        if (data.articles.length < 5) {
+          setHasMore(false)
+        }
+
         setLoading(false)
       })
   }
@@ -97,6 +109,11 @@ const Home = () => {
       })
       .then((data) => {
         setArticles(data.articles || [])
+
+        if (data.articles.length < 5) {
+          setHasMore(false)
+        }
+
         setLoading(false)
       })
   }
