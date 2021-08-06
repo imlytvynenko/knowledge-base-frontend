@@ -2,7 +2,6 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import ArticleList from "./Article/ArticleList";
 import SearchBar from './Search';
 import TagList from './TagList';
-import useFetch from "./useFetch";
 import { useState, useEffect } from 'react';
 import _ from 'underscore'
 
@@ -16,7 +15,7 @@ const style = {
 
 const Home = () => {
   const [articles, setArticles] = useState([])
-  const [tags, setTags] = useState(['general'])
+  const [tags, setTags] = useState([''])
   const [hasMore, setHasMore] = useState(true)
   const [loading, setLoading] = useState(true)
   const [offset, setOffset] = useState(0)
@@ -44,7 +43,7 @@ const Home = () => {
 
     fetch(url)
       .then((res) => {
-        if (!res.ok) { // error coming back from server
+        if (!res.ok) {
           throw Error('could not fetch the data for that resource');
         }
         return res.json();
@@ -53,16 +52,14 @@ const Home = () => {
         setArticles(articles.concat(data.articles || []))
         setLoading(false)
 
-        // TODO: hasmore should be included into server response or move to settings
-        if (data.articles.length < 5) {
+        if (data.articles.length < data.limit) {
           setHasMore(false)
         }
 
         if (!_.isEmpty(term)) {
           setHasMore(false)
         }
-        // TODO: Limit should be included into server response or move to settings
-        setOffset(offset + 5)
+        setOffset(offset + data.limit)
       })
   };
 
@@ -77,7 +74,7 @@ const Home = () => {
 
     fetch('/articles?tag=' + tag)
       .then((res) => {
-        if (!res.ok) { // error coming back from server
+        if (!res.ok) {
           throw Error('could not fetch the data for that resource');
           setLoading(false)
         }
@@ -86,7 +83,7 @@ const Home = () => {
       .then((data) => {
         setArticles(data.articles || [])
 
-        if (data.articles.length < 5) {
+        if (data.articles.length < data.limit) {
           setHasMore(false)
         }
 
@@ -101,7 +98,7 @@ const Home = () => {
 
     fetch('/articles?term=' + term)
       .then((res) => {
-        if (!res.ok) { // error coming back from server
+        if (!res.ok) {
           throw Error('could not fetch the data for that resource');
           setLoading(false)
         }
@@ -110,7 +107,7 @@ const Home = () => {
       .then((data) => {
         setArticles(data.articles || [])
 
-        if (data.articles.length < 5) {
+        if (data.articles.length < data.limit) {
           setHasMore(false)
         }
 
@@ -144,13 +141,5 @@ const Home = () => {
     </div>
   );
 }
- 
-// <div className="home">
-//        {/* { error && <div>{ error }</div> } */}
-//        { loading && <div>Loading...</div> }
-//        { articles.length ? (
-//           <ArticleList articles={articles} />
-//          ) : loading ? null : (<p>No articles!</p>
-//        )}
-//      </div>
+
 export default Home;

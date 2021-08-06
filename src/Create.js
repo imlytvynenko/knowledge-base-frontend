@@ -4,15 +4,15 @@ import { useHistory } from "react-router-dom";
 const Create = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [tags, setTags] = useState('');
   // const [author, setAuthor] = useState('mario');
   const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const article = { title, content };
+    const article = { title, content, tags };
 
     console.log(localStorage.getItem('token'))
-    debugger;
 
     fetch('/articles', {
       method: 'POST',
@@ -22,7 +22,6 @@ const Create = () => {
       },
       body: JSON.stringify(article)
     }).then(() => {
-      // history.go(-1);
       history.push('/');
     })
   }
@@ -44,14 +43,13 @@ const Create = () => {
           value={content}
           onChange={(e) => setContent(e.target.value)}
         ></textarea>
-        {/* <label>Author:</label>
-        <select
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
-        >
-          <option value="mario">mario</option>
-          <option value="yoshi">yoshi</option>
-        </select> */}
+        <label>Tags (split different tags by ','):</label>
+        <input 
+          type="text" 
+          required 
+          value={tags}
+          onChange={(e) => setTags(e.target.value)}
+        />
         <button>Add Article</button>
       </form>
     </div>
